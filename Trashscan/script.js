@@ -1,10 +1,13 @@
+let map; // Außerhalb der initMap-Funktion deklarieren
+let markers = []; // Array zum Speichern aller Marker
+
 function initMap() {
   const platform = new H.service.Platform({
     apikey: "N0gPRVOQOQACbb8IUQ8mC9l3P_COW1JxYcWhzWwHJeo",
   });
 
   const defaultLayers = platform.createDefaultLayers();
-  const map = new H.Map(
+  map = new H.Map(
     document.getElementById("map"),
     defaultLayers.vector.normal.map,
     {
@@ -17,7 +20,8 @@ function initMap() {
   const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
   const ui = H.ui.UI.createDefault(map, defaultLayers);
 
-  const markers = [
+  // Marker hinzufügen
+  const initialMarkers = [
     {
       lat: 47.401391236282066,
       lng: 9.751958834731964,
@@ -86,13 +90,57 @@ function initMap() {
     },
   ];
 
-  markers.forEach((markerInfo) => {
-    const marker = new H.map.Marker(
-      { lat: markerInfo.lat, lng: markerInfo.lng },
-      { icon: new H.map.Icon(markerInfo.icon) }
-    );
-    map.addObject(marker);
+  initialMarkers.forEach((markerInfo) => {
+    addMarker(markerInfo);
   });
 }
 
 initMap();
+
+document.getElementById("removeMarker").addEventListener("click", () => {
+  removeSelectedMarker();
+});
+
+document.getElementById("addMarker").addEventListener("click", () => {
+  // Die Funktion zum Hinzufügen eines neuen Markers wird durch Klicken auf die Karte ausgelöst
+  map.addEventListener("tap", addNewMarker);
+});
+
+document.getElementById("refreshMap").addEventListener("click", () => {
+  refreshMap();
+});
+
+function addMarker(markerInfo) {
+  const marker = new H.map.Marker(
+    { lat: markerInfo.lat, lng: markerInfo.lng },
+    { icon: new H.map.Icon(markerInfo.icon) }
+  );
+  map.addObject(marker);
+  markers.push(marker); // Marker zum Array hinzufügen
+}
+
+function removeSelectedMarker() {
+  // Marker entfernen, der ausgewählt wurde
+  map.removeObjects(map.getSelectedObjects());
+}
+
+function addNewMarker(event) {
+  const pointerPosition = map.screenToGeo(
+    event.currentPointer.viewportX,
+    event.currentPointer.viewportY
+  );
+
+  const newMarker = {
+    lat: pointerPosition.lat,
+    lng: pointerPosition.lng,
+    title: "New Marker",
+    icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
+  };
+
+  addMarker(newMarker);
+}
+
+function refreshMap() {
+  map.setCenter({ lat: 47.4125, lng: 9.74355 });
+  map.setZoom(14);
+}
