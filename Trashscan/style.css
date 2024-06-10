@@ -60,7 +60,8 @@ li {
 .total {
   font-weight: bold;
   width: 20%;
-  height: 35px;
+  height: 5px;
+  margin-top: 10px;
   background-color: yellowgreen;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
@@ -79,17 +80,29 @@ h2 {
   flex-direction: column;
 }
 
-button {
-  background-color: yellowgreen;
+button,
+.red,
+.green,
+.total {
+  background-color: rgb(198, 255, 83);
   border: none;
   border-radius: 10px;
-  color: white;
+  color: black;
   padding: 10px;
   margin-bottom: 10px;
-  cursor: pointer;
   font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button {
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 button:hover {
   background-color: green;
+  transform: translateY(-2px);
 }
