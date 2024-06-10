@@ -7,11 +7,10 @@ function SimpleTSP() {
     let shortestPath = null;
     let shortestDistance = Number.MAX_VALUE;
 
-    // Generate all permutations of positions (excluding the first position)
     const permutations = generatePermutations(positions.slice(1));
 
     for (const permutation of permutations) {
-      const fullPath = [positions[0], ...permutation, positions[0]]; // Ensure the route starts and ends at the starting point
+      const fullPath = [positions[0], ...permutation, positions[0]];
       const totalDistance = calculateTotalDistance(fullPath);
 
       if (totalDistance < shortestDistance) {
@@ -94,9 +93,6 @@ function initMap() {
     ],
   });
 
-  // Your markers code remains unchanged.
-
-  // Create an array of markers with their positions and custom titles
   let red = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
   let green = "http://maps.google.com/mapfiles/ms/icons/green-dot.png";
   let blue = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
@@ -151,17 +147,15 @@ function initMap() {
     },
   ];
 
-  // Loop through the markers array and add them to the map
   markers.forEach((markerInfo) => {
     const marker = new google.maps.Marker({
       position: { lat: markerInfo.lat, lng: markerInfo.lng },
       map: map,
       title: markerInfo.title,
-      icon: markerInfo.icon, // Set the custom icon for each marker
+      icon: markerInfo.icon,
     });
   });
 
-  // Extract the positions of red markers
   const redMarkerPositions = markers
     .filter((markerInfo) => markerInfo.icon === red)
     .map((markerInfo) => ({
@@ -169,18 +163,14 @@ function initMap() {
       lng: markerInfo.lng,
     }));
 
-  // Specify the fixed starting point
   const startingPoint = { lat: 47.401391236282066, lng: 9.751958834731964 };
 
-  // Calculate the most efficient route using the Traveling Salesman Problem solver
   const tsp = new SimpleTSP();
   const optimizedOrder = tsp.solve([startingPoint, ...redMarkerPositions]);
 
-  // Make the blue marker the starting and ending point of the route
   optimizedOrder.unshift(startingPoint);
   optimizedOrder.push(startingPoint);
 
-  // Create waypoints in the optimized order (excluding the starting point, which is now the ending point)
   const waypoints = optimizedOrder
     .slice(1, optimizedOrder.length - 1)
     .map((position) => ({
@@ -188,11 +178,10 @@ function initMap() {
       stopover: true,
     }));
 
-  // Use the Directions Service to display the optimized route
   const directionsService = new google.maps.DirectionsService();
   const directionsRenderer = new google.maps.DirectionsRenderer({
     map: map,
-    suppressMarkers: true, // Hide the lettered markers
+    suppressMarkers: true,
   });
 
   const request = {
@@ -238,27 +227,22 @@ function initMap() {
     if (status === google.maps.DirectionsStatus.OK) {
       directionsRenderer.setDirections(response);
 
-      // Extract the route details from the response
-      const route = response.routes[0]; // Assuming there's only one route
-      const legs = route.legs; // Get the legs of the route
+      const route = response.routes[0];
+      const legs = route.legs;
 
       let totalDistance = 0;
       let totalTime = 0;
 
-      // Calculate the total distance and time from all legs
       for (let i = 0; i < legs.length; i++) {
-        totalDistance += legs[i].distance.value; // Distance in meters
-        totalTime += legs[i].duration.value; // Duration in seconds
+        totalDistance += legs[i].distance.value;
+        totalTime += legs[i].duration.value;
       }
 
-      // Convert totalDistance to kilometers
-      const distanceInKm = (totalDistance / 1000).toFixed(2); // Convert to 2 decimal places
+      const distanceInKm = (totalDistance / 1000).toFixed(2);
 
-      // Convert totalTime to hours and minutes
       const hours = Math.floor(totalTime / 3600);
       const minutes = Math.floor((totalTime % 3600) / 60);
 
-      // Display the distance and estimated time on the page
       document.getElementById("distance").innerHTML =
         "Distance: " + distanceInKm + " km";
       document.getElementById("duration").innerHTML =
@@ -269,7 +253,6 @@ function initMap() {
   });
 }
 
-// Helper function to check if two positions are equal
 function arePositionsEqual(pos1, pos2) {
   return pos1.lat === pos2.lat && pos1.lng === pos2.lng;
 }
@@ -280,7 +263,6 @@ var date =
 var hours = today.getHours();
 var minutes = today.getMinutes();
 
-// Add leading zeros if necessary
 var hoursString = (hours < 10 ? "0" : "") + hours;
 var minutesString = (minutes < 10 ? "0" : "") + minutes;
 
