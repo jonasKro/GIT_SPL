@@ -108,10 +108,10 @@ function initMap() {
       icon: blue,
     },
     { lat: 47.4125, lng: 9.74355, title: "Marker 1", icon: red },
-  //  { lat: 47.415, lng: 9.745, title: "Marker 2", icon: green },
+    //  { lat: 47.415, lng: 9.745, title: "Marker 2", icon: green },
     { lat: 47.418, lng: 9.747, title: "Marker 3", icon: red },
     { lat: 47.42, lng: 9.749, title: "Marker 4", icon: red },
-    { lat: 47.422, lng: 9.751, title: "Marker 5", icon: red },
+    { lat: 47.422, lng: 9.751, title: "Marker 5", icon: green },
     { lat: 47.424, lng: 9.753, title: "Marker 6", icon: green },
     {
       lat: 47.409602701097,
@@ -125,7 +125,7 @@ function initMap() {
       title: "Marker 7",
       icon: red,
     },
-/*    {
+    /*    {
       lat: 47.4107193803123,
       lng: 9.733852370986181,
       title: "Marker 9",
